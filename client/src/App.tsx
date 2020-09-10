@@ -11,8 +11,10 @@ const formStyle = {
   justifyContent: "center",
   alignItems: "center",
 };
-
-const UploadForm: React.FC = () => {
+type UploadFormType = {
+  callback?: (f: FileList) => void;
+};
+const UploadForm: React.FC<UploadFormType> = ({ callback }: UploadFormType) => {
   const [files, setFiles] = React.useState<FileList | null>(null);
   const fileUpload = () => {
     if (files) {
@@ -37,6 +39,7 @@ const UploadForm: React.FC = () => {
   };
   const onFilesSelect = (event: any) => {
     setFiles(event.target.files);
+    callback && callback(event.target.files);
   };
   return (
     <div style={formStyle}>
@@ -45,20 +48,37 @@ const UploadForm: React.FC = () => {
     </div>
   );
 };
-const ViewForm: React.FC = () => {
-  const [files, setFiles] = React.useState([]);
+
+type ViewFormType = {
+  files: FileList | null;
+};
+const ViewForm: React.FC<ViewFormType> = ({ files }: ViewFormType) => {
   React.useEffect(() => {
-    console.log("fetching files");
+    // console.log(files);
   });
-  return <div style={formStyle}>files</div>;
+  return (
+    <div style={formStyle}>
+      <ul>
+        {files &&
+          Array.from(Array(files.length)).map((_, i) => (
+            <li key={i}>{files[i].name}</li>
+          ))}
+      </ul>
+    </div>
+  );
 };
 
 function App() {
+  const [files, setFiles] = React.useState<FileList | null>(null);
   return (
     <div className="App">
       <header className="App-header">
-        <UploadForm />
-        <ViewForm />
+        <UploadForm
+          callback={(files: FileList) => {
+            setFiles(files);
+          }}
+        />
+        <ViewForm files={files} />
       </header>
     </div>
   );

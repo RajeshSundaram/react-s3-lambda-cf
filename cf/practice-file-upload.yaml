@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  Create S3 Bucket & attach access policy
+Resources:
+  MyBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: tzrajesh7-practice-files
+      AccessControl: PublicRead
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders: ["*"]
+            AllowedMethods: [GET]
+            AllowedOrigins: ["*"]
+            ExposedHeaders: [Date]
+            Id: myCORSRuleId1
+            MaxAge: 3600
+      Tags:
+        - Key: purpose
+          Value: practice
+
+Outputs:
+  BucketName:
+    Description: bucket name
+    Value: !Ref MyBucket
+  BucketURL:
+    Description: bucket url
+    Value: !GetAtt MyBucket.WebsiteURL
