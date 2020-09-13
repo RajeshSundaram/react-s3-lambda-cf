@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  file-upload
+  Sample SAM Template for file-upload
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 20
+  Api:
+    Cors:
+      AllowOrigin: "'*'"
+      AllowHeaders: "'content-type'"
+      AllowMethods: "'GET, POST, OPTIONS'"
+
+Resources:
+  FilesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: tzrajesh7-files
+      CorsConfiguration:
+        CorsRules:
+          - AllowedOrigins: ["*"]
+            AllowedHeaders: ["*"]
+            AllowedMethods: [GET, POST, PUT, HEAD]
+            Id: BUCKET_CORS
+            MaxAge: 1800
+      Tags:
+        - Key: purpose
+          Value: practice-media-upload
+
+  UploadInitialtorFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: upload-initiator/
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      Environment:
+        Variables:
+          FILES_BUCKET: tzrajesh7-files
+          # FILES_BUCKET: !Ref FilesBucket
+      Tags:
+        purpose: practice-media-upload
+
+      Events:
+        MediaUpload:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /upload
+            Method: post
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  Bucket:
+    Description: bucket used for files storing
+    Value: !Ref FilesBucket
+  ServerlessRestApi:
+    Description: "API Gateway endpoint URL to trigger UploadInitialtorFunction"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/upload/"
+  UploadInitialtorFunction:
+    Description: "UploadInitialtorFunction ARN"
+    Value: !GetAtt UploadInitialtorFunction.Arn
+  UploadInitialtorFunctionIamRole:
+    Description: "Implicit IAM Role created for UploadInitialtorFunction"
+    Value: !GetAtt UploadInitialtorFunction.Arn

@@ -1,87 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
+import { UploadForm } from "./uploader";
+import { ViewForm } from "./viewer";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 
-const formStyle = {
-  height: "50vh",
-  width: "100vw",
-  margin: "3%",
-  background: "white",
-  color: "brown",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
-type UploadFormType = {
-  callback?: (f: FileList) => void;
-};
-const UploadForm: React.FC<UploadFormType> = ({ callback }: UploadFormType) => {
-  const [files, setFiles] = React.useState<FileList | null>(null);
-  const fileUpload = () => {
-    if (files) {
-      console.log("uploading");
-      const formData = new FormData();
-      for (let i = 0; i < files.length; i++) {
-        formData.append(files[i].name, files[i]);
-      }
-      const api = process.env.REACT_APP_UPLOAD_FILES_API;
-      if (!api) {
-        throw new Error("invalid API");
-      }
-      fetch(api, {
-        method: "POST",
-        body: formData,
-      }).then((res) => {
-        console.log(res);
-      });
-    } else {
-      console.error("no files selected");
-    }
-  };
-  const onFilesSelect = (event: any) => {
-    setFiles(event.target.files);
-    callback && callback(event.target.files);
-  };
-  return (
-    <div style={formStyle}>
-      <input type="file" name="file" multiple onChange={onFilesSelect} />
-      <input type="button" name="upload" onClick={fileUpload} value="upload" />
-    </div>
-  );
-};
-
-type ViewFormType = {
-  files: FileList | null;
-};
-const ViewForm: React.FC<ViewFormType> = ({ files }: ViewFormType) => {
-  React.useEffect(() => {
-    // console.log(files);
-  });
-  return (
-    <div style={formStyle}>
-      <ul>
-        {files &&
-          Array.from(Array(files.length)).map((_, i) => (
-            <li key={i}>{files[i].name}</li>
-          ))}
-      </ul>
-    </div>
-  );
-};
-
+const useStyles = makeStyles(() => ({
+  header: {
+    height: "100px",
+    display: "flex",
+    alignItems: "center",
+  },
+  nav: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-around",
+    flexWrap: "wrap",
+  },
+  button: {
+    width: "45%",
+    height: 30,
+    outline: "none",
+    borderRadius: 10,
+    border: "none",
+    boxShadow: "1px 2px 3px 3px lightgrey",
+    minWidth: "200px",
+    marginTop: "0.5rem",
+  },
+  section: {
+    border: "2px solid lightcoral",
+    margin: "0px 5%",
+  },
+}));
+type ViewType = "upload" | "view";
 function App() {
-  const [files, setFiles] = React.useState<FileList | null>(null);
+  const styles = useStyles();
+  const [viewType, setViewType] = useState<ViewType>("upload");
+  const setView = (type: ViewType) => {
+    return () => {
+      setViewType(type);
+    };
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <UploadForm
-          callback={(files: FileList) => {
-            setFiles(files);
-          }}
-        />
-        <ViewForm files={files} />
+      <header className={styles.header}>
+        <nav className={styles.nav}>
+          <Button className={styles.button} onClick={setView("upload")}>
+            Uploader
+          </Button>
+          <Button className={styles.button} onClick={setView("view")}>
+            Viewer
+          </Button>
+        </nav>
       </header>
+      <section className={styles.section}>
+        {viewType === "upload" && <UploadForm />}
+        {viewType === "view" && <ViewForm />}
+      </section>
     </div>
   );
 }
-
 export default App;

@@ -1,11 +1,12 @@
 {
   "name": "file_upload",
   "version": "1.0.0",
-  "description": "s3 file upload",
+  "description": "s3 media uploader",
   "main": "app.js",
   "author": "rajesh.sundaram",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.750.0",
     "axios": "^0.18.0"
   },
   "scripts": {

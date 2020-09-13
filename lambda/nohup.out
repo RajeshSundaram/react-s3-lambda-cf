@@ -1,0 +1,15 @@
+Mounting UploadInitialtorFunction at http://127.0.0.1:3000/upload [POST, OPTIONS]
+You can now browse to the above endpoints to invoke your functions. You do not need to restart/reload SAM CLI while working on your functions, changes will be reflected instantly/automatically. You only need to restart SAM CLI if you update your AWS SAM template
+2020-09-13 08:54:58  * Running on http://127.0.0.1:3000/ (Press CTRL+C to quit)
+2020-09-13 08:55:51 127.0.0.1 - - [13/Sep/2020 08:55:51] "[31m[1mGET / HTTP/1.1[0m" 403 -
+2020-09-13 08:56:43 127.0.0.1 - - [13/Sep/2020 08:56:43] "[31m[1mGET /favicon.ico HTTP/1.1[0m" 403 -
+2020-09-13 08:56:45 127.0.0.1 - - [13/Sep/2020 08:56:45] "[31m[1mGET / HTTP/1.1[0m" 403 -
+2020-09-13 08:56:45 127.0.0.1 - - [13/Sep/2020 08:56:45] "[31m[1mGET /favicon.ico HTTP/1.1[0m" 403 -
+2020-09-13 08:56:45 127.0.0.1 - - [13/Sep/2020 08:56:45] "[31m[1mGET / HTTP/1.1[0m" 403 -
+2020-09-13 08:56:45 127.0.0.1 - - [13/Sep/2020 08:56:45] "[31m[1mGET /favicon.ico HTTP/1.1[0m" 403 -
+2020-09-13 08:56:45 127.0.0.1 - - [13/Sep/2020 08:56:45] "[31m[1mGET / HTTP/1.1[0m" 403 -
+2020-09-13 08:56:45 127.0.0.1 - - [13/Sep/2020 08:56:45] "[31m[1mGET /favicon.ico HTTP/1.1[0m" 403 -
+2020-09-13 08:56:45 127.0.0.1 - - [13/Sep/2020 08:56:45] "[31m[1mGET / HTTP/1.1[0m" 403 -
+2020-09-13 08:56:45 127.0.0.1 - - [13/Sep/2020 08:56:45] "[31m[1mGET /favicon.ico HTTP/1.1[0m" 403 -
+2020-09-13 08:56:45 127.0.0.1 - - [13/Sep/2020 08:56:45] "[31m[1mGET / HTTP/1.1[0m" 403 -
+2020-09-13 08:56:46 127.0.0.1 - - [13/Sep/2020 08:56:46] "[31m[1mGET /favicon.ico HTTP/1.1[0m" 403 -

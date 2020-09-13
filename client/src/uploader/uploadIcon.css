@@ -1,0 +1,74 @@
+@keyframes uploading-arrow {
+  0% {
+    margin-bottom: -40%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    margin-bottom: 30%;
+  }
+}
+
+@keyframes uploading-arrow-complete {
+  from {
+    margin-bottom: -30%;
+    opacity: 0;
+  }
+  to {
+    margin-bottom: 0;
+    opacity: 1;
+    fill: #46bb39;
+  }
+}
+
+.upload-btn-container {
+  position: relative;
+  overflow: hidden;
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+}
+
+.upload-btn-container svg {
+  position: absolute;
+}
+
+.upload-btn-container.set-in-motion svg path {
+  fill: lightgrey;
+}
+.upload-btn-container.progress svg path {
+  fill: rebeccapurple;
+}
+.upload-btn-container.done svg path {
+  fill: #46bb39;
+}
+
+.upload-btn-container svg.upload-box {
+  bottom: -7px;
+  left: 0;
+}
+.upload-btn-container svg.upload-arrow {
+  left: 8px;
+  position: absolute;
+  bottom: 20%;
+}
+.upload-btn-container.progress svg.upload-arrow {
+  opacity: 0;
+  animation: uploading-arrow 1.5s ease-out infinite;
+}
+
+.upload-btn-container.done .upload-arrow {
+  animation: uploading-arrow-complete 1.5s ease-out 1;
+  transition: fill 1.5s ease-out;
+}
+.upload-btn-container.done svg {
+  opacity: 1;
+}
