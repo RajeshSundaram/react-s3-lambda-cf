@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 type ViewType = "upload" | "view";
 function App() {
   const styles = useStyles();
-  const [viewType, setViewType] = useState<ViewType>("upload");
+  const [viewType, setViewType] = useState<ViewType>("view");
   const setView = (type: ViewType) => {
     return () => {
       setViewType(type);
