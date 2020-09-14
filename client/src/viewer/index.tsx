@@ -10,7 +10,8 @@ import {
 import { PlayForWork, VideoLabel } from "@material-ui/icons";
 import * as React from "react";
 import { Player } from "../components/player";
-import { FileContext } from "./../uploader";
+
+import debounce from "lodash/debounce";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -20,8 +21,12 @@ const useStyles = makeStyles(() => ({
     gridGap: "1rem",
     minHeight: 250,
   },
-  playerContainer: {},
+  playerContainer: {
+    display: "flex",
+    alignItems: "center",
+  },
   filesListContainer: {
+    minHeight: 250,
     "& .username": {
       display: "grid",
       gridTemplateColumns: "60% 30%",
@@ -31,30 +36,55 @@ const useStyles = makeStyles(() => ({
       },
     },
     "& .files-list-container": {
-      // opacity: 0,
-      display: "none",
-      transform: "translateX(-200%)",
+      height: 0,
+      opacity: 0,
+      transition: "opacity 0.3s linear, height 0.5s ease-in-out",
+      "&.show": {
+        height: "revert",
+        opacity: 1,
+      },
     },
     "& .files-list-container .files-list": {
       border: "1px solid rebeccapurple",
+      maxHeight: 400,
+      overflowY: "scroll",
+      "& .list-item": {
+        "&:hover": {
+          background: "#c6adde",
+        },
+        cursor: "pointer",
+      },
     },
   },
 }));
-
-const getListPresignedUrl = async (username: string): Promise<string> => {
-  return "";
-};
 
 type ViewFormType = {
   dummy?: boolean;
 };
 export const ViewForm: React.FC<ViewFormType> = ({ dummy }: ViewFormType) => {
   const classes = useStyles();
+  const [fileList, setFilesList] = React.useState<Array<string>>([]);
   const [username, setUsername] = React.useState("");
-  const fetchFiles = async () => {
-    const url = await getListPresignedUrl(username);
-    const filesList = await fetch(url, { method: "GET" });
-    console.log(filesList);
+  const [videoURL, setVideoURL] = React.useState("");
+  React.useEffect(() => {
+    listFiles();
+  }, []);
+
+  const listFiles = () => {
+    fetch(`${process.env.REACT_APP_FILE_API_DOMAIN}/list?username=${username}`)
+      .then((res) => res.json())
+      .then((res: any) => {
+        setFilesList(res.items as Array<string>);
+      });
+  };
+
+  const readFile = async (fileKey) => {
+    const res = await fetch(
+      `${process.env.REACT_APP_FILE_API_DOMAIN}/read?fileKey=${fileKey}`,
+      { method: "GET" }
+    );
+    const url = (await res.json()).url;
+    setVideoURL(url);
   };
   return (
     <div className={classes.container}>
@@ -70,26 +100,34 @@ export const ViewForm: React.FC<ViewFormType> = ({ dummy }: ViewFormType) => {
             className="submit-button"
             color="primary"
             variant="contained"
-            disabled={!username}
-            onClick={fetchFiles}
+            // disabled={!username}
+            onClick={listFiles}
             startIcon={<PlayForWork />}
           >
             Fetch
           </Button>
         </div>
-        <div className="files-list-container">
-          <List className="files-list">
-            <ListItem>
-              <ListItemIcon>
-                <VideoLabel />
-              </ListItemIcon>
-              <ListItemText>Hello</ListItemText>
-            </ListItem>
+        <div
+          className={`files-list-container ${fileList.length ? "show" : ""}`}
+        >
+          <List className="files-list" color="primary">
+            {fileList.map((it) => (
+              <ListItem
+                key={it}
+                onClick={() => readFile(it)}
+                className="list-item"
+              >
+                <ListItemIcon>
+                  <VideoLabel />
+                </ListItemIcon>
+                <ListItemText>{it}</ListItemText>
+              </ListItem>
+            ))}
           </List>
         </div>
       </div>
       <div className={classes.playerContainer}>
-        <Player />
+        {videoURL && <Player url={videoURL} />}
       </div>
     </div>
   );

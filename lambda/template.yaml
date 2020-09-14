@@ -49,6 +49,42 @@ Resources:
           Properties:
             Path: /upload
             Method: post
+
+  ListFilesOfUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: list-files/
+      Handler: app.handler
+      Runtime: nodejs12.x
+      Environment:
+        Variables:
+          FILES_BUCKET: tzrajesh7-files
+      Tags:
+        purpose: practice
+      Events:
+        ListMedia:
+          Type: Api
+          Properties:
+            Path: /list
+            Method: get
+  ReadFileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: list-files/
+      Handler: app.readFileHandler
+      Runtime: nodejs12.x
+      Environment:
+        Variables:
+          FILES_BUCKET: tzrajesh7-files
+      Tags:
+        purpose: practice
+      Events:
+        ListMedia:
+          Type: Api
+          Properties:
+            Path: /read
+            Method: get
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM

@@ -154,7 +154,7 @@ export const UploadForm: React.FC<UploadFormType> = ({
 
   const mediaUpload = (context: FileContextType) => {
     const { username, files, setUploadStatus } = context;
-    const api = process.env.REACT_APP_UPLOAD_FILES_API;
+    const api = `${process.env.REACT_APP_FILE_API_DOMAIN}/upload`;
     if (!api) {
       throw new Error("invalid API");
     }

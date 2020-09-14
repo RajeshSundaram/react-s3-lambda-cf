@@ -6,8 +6,7 @@
   "author": "rajesh.sundaram",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.750.0",
-    "axios": "^0.18.0"
+    "aws-sdk": "^2.750.0"
   },
   "scripts": {
     "test": "mocha tests/unit/"

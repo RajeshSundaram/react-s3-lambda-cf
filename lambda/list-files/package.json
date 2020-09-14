@@ -1,0 +1,14 @@
+{
+  "name": "list-files",
+  "version": "1.0.0",
+  "description": "list s3 files by providing presigned url",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "author": "rajesh.sundaram",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.751.0"
+  }
+}

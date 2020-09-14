@@ -1,13 +1,9 @@
 import * as React from "react";
 import VideoPlayer from "react-video-js-player";
-
-export const Player: React.FC = () => {
-  return (
-    <VideoPlayer
-      controls={true}
-      src={"https://www.welovedogs.jp/movie/video_001.mp4"}
-      width="400"
-      height="250"
-    />
-  );
+type PlayerProps = { url: string };
+export const Player: React.FC<PlayerProps> = ({ url }: PlayerProps) => {
+  const onPlayerReady = (player) => {
+    player.fluid(true);
+  };
+  return <VideoPlayer controls={true} onReady={onPlayerReady} src={url} />;
 };
