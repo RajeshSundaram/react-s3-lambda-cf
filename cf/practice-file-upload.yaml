@@ -2,18 +2,18 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: >
   Create S3 Bucket & attach access policy
 Resources:
-  MyBucket:
+  MediaBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: tzrajesh7-practice-files
-      AccessControl: PublicRead
+      BucketName: tzrajesh7-media
+      AccessControl: Private
       CorsConfiguration:
         CorsRules:
-          - AllowedHeaders: ["*"]
-            AllowedMethods: [GET]
+          - AllowedHeaders: ["Content-Type"]
+            AllowedMethods: [GET, PUT]
             AllowedOrigins: ["*"]
             ExposedHeaders: [Date]
-            Id: myCORSRuleId1
+            Id: appCors
             MaxAge: 3600
       Tags:
         - Key: purpose
@@ -22,7 +22,7 @@ Resources:
 Outputs:
   BucketName:
     Description: bucket name
-    Value: !Ref MyBucket
+    Value: !Ref MediaBucket
   BucketURL:
     Description: bucket url
-    Value: !GetAtt MyBucket.WebsiteURL
+    Value: !GetAtt MediaBucket.WebsiteURL

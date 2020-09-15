@@ -6,10 +6,10 @@ const expect = chai.expect;
 var event, context;
 
 describe("Tests index", function () {
-  it("verifies successful response", async () => {
+  it("should responde with bad request", async () => {
+    event = { body: JSON.stringify({}) };
     const result = await app.lambdaHandler(event, context);
     expect(result).to.be.an("object");
-    expect(result.statusCode).to.equal(200);
-    expect(result.body).to.be.an("string");
+    expect(result.statusCode).to.equal(400);
   });
 });

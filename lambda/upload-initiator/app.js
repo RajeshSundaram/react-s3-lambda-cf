@@ -17,7 +17,7 @@ let response;
 exports.lambdaHandler = async (event, context) => {
   const reqBody = JSON.parse(event.body);
   const { FILES_BUCKET } = process.env;
-  if (!reqBody.username || !reqBody.files.length) {
+  if (!reqBody.username || !reqBody.files || !reqBody.files.length) {
     return errorResponse(400, "Username & files is required");
   }
   try {
